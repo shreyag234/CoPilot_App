@@ -1,0 +1,76 @@
+{
+  "project_info": {
+    "project_number": "630354949958",
+    "project_id": "copilotapp-672ae",
+    "storage_bucket": "copilotapp-672ae.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:630354949958:android:e3ae294c000ddeed16d747",
+        "android_client_info": {
+          "package_name": "com.example.copilot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "630354949958-7j6nba9eok951on11i4omm9mjlnebj30.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDB_So3g7WTAK2WZJg6clZkdct9brMU4hg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "630354949958-7j6nba9eok951on11i4omm9mjlnebj30.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:630354949958:android:7570adcfa71da9ac16d747",
+        "android_client_info": {
+          "package_name": "com.varsitycollege.copilot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "630354949958-a2f6eqhs9ijeb3n7q0c0inbvhsfoepm4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.varsitycollege.copilot",
+            "certificate_hash": "e382a4590960525957f3479c9667d5ff0cd0b9d0"
+          }
+        },
+        {
+          "client_id": "630354949958-7j6nba9eok951on11i4omm9mjlnebj30.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDB_So3g7WTAK2WZJg6clZkdct9brMU4hg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "630354949958-7j6nba9eok951on11i4omm9mjlnebj30.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

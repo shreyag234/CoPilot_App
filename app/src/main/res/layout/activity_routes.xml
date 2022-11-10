@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:context=".RoutesActivity">
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="550dp">
+
+        <ImageButton
+            android:id="@+id/zoomInBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="330dp"
+            android:layout_marginTop="425dp"
+            android:background="#0000ffff"
+            android:foregroundGravity="center"
+            android:src="@drawable/zoom_in" />
+
+        <ImageButton
+            android:id="@+id/zoomOutBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="330dp"
+            android:layout_marginTop="455dp"
+            android:background="#0000ffff"
+            android:foregroundGravity="center"
+            android:src="@drawable/zoom_out" />
+    </fragment>
+
+    <LinearLayout
+        android:id="@id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_below="@id/map"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/go_btn"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/buttonstyle"
+            android:fontFamily="sans-serif-condensed"
+            android:text="show"
+            android:layout_marginLeft="120dp"
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+        <Button
+            android:id="@+id/save_btn"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/buttonstyle"
+            android:fontFamily="sans-serif-condensed"
+            android:text="♡"
+            android:layout_marginLeft="30dp"
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:layout_below="@id/linearLayout2"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/searchPlace"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_weight="1"
+            android:width="30dp"
+            android:ems="10"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:hint="Search Place"
+            android:inputType="textPersonName" />
+
+        <ImageButton
+            android:id="@+id/searchBtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/white"
+            android:foregroundGravity="center"
+            android:src="@drawable/search_icon" />
+
+        <Button
+            android:id="@+id/time_btn"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/buttonstyle"
+            android:fontFamily="sans-serif-condensed"
+            android:text="GO"
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/route_btn"
+            android:layout_width="50dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/buttonstyle"
+            android:fontFamily="sans-serif-condensed"
+            android:text="➦"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+
+
+    </LinearLayout>
+
+
+
+<com.google.android.material.bottomnavigation.BottomNavigationView
+android:id="@+id/bottom_nav"
+android:layout_width="match_parent"
+android:layout_height="70dp"
+android:layout_below="@id/linearLayout"
+    android:layout_marginTop="0dp"
+app:itemIconTint="@color/Blue"
+app:itemTextColor="@color/Blue"
+app:menu="@menu/bottom_nav" />
+
+
+    </RelativeLayout>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:context=".MapsActivity">
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="500dp" >
+
+        <ImageButton
+            android:id="@+id/zoomInBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="425dp"
+            android:layout_marginLeft="330dp"
+            android:background="#0000ffff"
+            android:foregroundGravity="center"
+            android:src="@drawable/zoom_in" />
+        <ImageButton
+            android:id="@+id/zoomOutBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="455dp"
+            android:layout_marginLeft="330dp"
+            android:background="#0000ffff"
+            android:foregroundGravity="center"
+            android:src="@drawable/zoom_out" />
+    </fragment>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_below="@id/map"
+        android:orientation="horizontal">
+
+
+        <EditText
+            android:id="@+id/searchPlace"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="15dp"
+            android:layout_weight="1"
+            android:width="30dp"
+            android:ems="10"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:hint="Search Place"
+            android:inputType="textPersonName" />
+
+        <ImageButton
+            android:id="@+id/searchBtn"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:background="@color/white"
+            android:foregroundGravity="center"
+            android:src="@drawable/search_icon" />
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/linearLayout"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+        <ImageButton
+            android:id="@+id/atm"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_atm"
+            android:background="@color/lightBlue" />
+        <Space
+            android:layout_width="5dp"
+            android:layout_height="wrap_content"/>
+        <ImageButton
+            android:id="@+id/hospital"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_hospital"
+            android:background="@color/lightBlue"/>
+        <Space
+            android:layout_width="5dp"
+            android:layout_height="wrap_content"/>
+        <ImageButton
+            android:id="@+id/hotel"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_hotel"
+            android:background="@color/lightBlue"/>
+        <Space
+            android:layout_width="5dp"
+            android:layout_height="wrap_content"/>
+        <ImageButton
+            android:id="@+id/forest"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_forest"
+            android:background="@color/lightBlue"/>
+        <Space
+            android:layout_width="5dp"
+            android:layout_height="wrap_content"/>
+        <ImageButton
+            android:id="@+id/restaurant"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_restaurant"
+            android:background="@color/lightBlue"/>
+        <Space
+            android:layout_width="5dp"
+            android:layout_height="wrap_content"/>
+        <ImageButton
+            android:id="@+id/attractions"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_attractions"
+            android:background="@color/lightBlue"/>
+
+
+    </LinearLayout>
+    <Space
+        android:id="@+id/space"
+        android:layout_below="@id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"></Space>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_below="@id/space"
+        app:itemIconTint="@color/Blue"
+        app:itemTextColor="@color/Blue"
+        app:menu="@menu/bottom_nav" />
+
+
+</RelativeLayout>

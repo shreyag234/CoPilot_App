@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/maps_nav"
+        android:title="Maps"
+        android:icon="@drawable/ic_maps"/>
+    <item
+        android:id="@+id/fav_nav"
+        android:title="Favs"
+        android:icon="@drawable/ic_favorite"/>
+    <item android:id="@+id/home_nav"
+        android:title="Home"
+        android:icon="@drawable/ic_home"/>
+    <item android:id="@+id/settings_nav"
+        android:title="Settings"
+        android:icon="@drawable/ic_settings"/>
+    <item android:id="@+id/logoff_nav"
+        android:title="LogOut"
+        android:icon="@drawable/last_menu"/>
+</menu>
