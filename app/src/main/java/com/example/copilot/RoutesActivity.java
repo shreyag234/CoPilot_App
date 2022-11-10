@@ -41,6 +41,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -81,7 +82,7 @@ public class RoutesActivity extends FragmentActivity implements OnMapReadyCallba
     double lat_end_new, lng_end_new;
 
     //varibales to store the firebase reference and show markers
-    private DatabaseReference mUsers;
+    private DatabaseReference refDatabase;
     Marker markerTopopUp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -356,9 +357,28 @@ public class RoutesActivity extends FragmentActivity implements OnMapReadyCallba
 
             buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
-
-
         }
+
+        //retreiving favourite landmarks
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Location").child("location");
+        ValueEventListener listener = databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Double lat = snapshot.child("latitude").getValue(Double.class);
+                Double lng = snapshot.child("longitude").getValue(Double.class);
+
+                LatLng Favlocation = new LatLng(lat,lng);
+                mMap.addMarker(new MarkerOptions().position(Favlocation).title("Fav"));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Favlocation, 14F));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
 
     }
 
@@ -513,7 +533,7 @@ public class RoutesActivity extends FragmentActivity implements OnMapReadyCallba
         Map  mCoordinate = new HashMap();
         mCoordinate.put("latitude", end_latitude);
         mCoordinate.put("longitude", end_longitude);
-        mLocations.put(" fav location", mCoordinate);
+        mLocations.put("mylocation", mCoordinate);
         FirebaseDatabase.getInstance().getReference("User").child(mAuth.getUid()).child("Location").push().setValue(mLocations);
         Toast.makeText(this, "Favourite Added!", Toast.LENGTH_LONG).show();
         //databaseReference.push().setValue(mLocations);
