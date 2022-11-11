@@ -3,4 +3,6 @@
     <string name="title_activity_maps">MapsActivity</string>
     <string name="googleMapsKey">AIzaSyAnPU2crxXHZGIgMKQpYzxSbpmtvapghiY</string>
     <string name="title_activity_routes">RoutesActivity</string>
+    <string name="title_activity_fav">FavActivity</string>
+
 </resources>

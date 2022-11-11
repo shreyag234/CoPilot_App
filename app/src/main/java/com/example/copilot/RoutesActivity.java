@@ -49,6 +49,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,7 +84,11 @@ public class RoutesActivity extends FragmentActivity implements OnMapReadyCallba
 
     //varibales to store the firebase reference and show markers
     private DatabaseReference refDatabase;
-    Marker markerTopopUp;
+
+    //arrays that store all the latitudes and longitudes of the fav location
+    ArrayList<Double> fav_lat = new ArrayList<Double>();
+    ArrayList<Double> fav_lng = new ArrayList<Double>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,14 +98,9 @@ public class RoutesActivity extends FragmentActivity implements OnMapReadyCallba
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
-        //testing if the markers of favs show up
-       // mUsers= FirebaseDatabase.getInstance().getReference().child("User").child(mAuth.getUid()).child("Locations").child("fav location");
-        //mUsers.push().setValue(markerTopopUp);
-
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             checkLocPermission();
         }
-
         //checks if Google Play Services are available or not
         if(!CheckGooglePlayServices()){
             Log.d("onCreate", "Finishing test case since Google Play Services are not available");
@@ -118,6 +118,9 @@ public class RoutesActivity extends FragmentActivity implements OnMapReadyCallba
         show_btn = findViewById(R.id.go_btn); //makes the marker appear
         route_btn = findViewById(R.id.route_btn); //embedded route on map
         save_btn = findViewById(R.id.save_btn);
+
+        getFavLat();
+        getFavLng();
 
         zoomIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -224,6 +227,8 @@ public class RoutesActivity extends FragmentActivity implements OnMapReadyCallba
                 // "\n"+miles +" in Miles");
 
 
+
+
             }
         });
 
@@ -267,67 +272,14 @@ public class RoutesActivity extends FragmentActivity implements OnMapReadyCallba
         save_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //calling the method that saves location
                 saveToFirebase();
-                //adding the markers of the fav
-                /**mUsers.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        //Create an array of markers
-                      //  int size = (int)  snapshot.getChildrenCount(); //
-                       // Marker[] allMarkers = new Marker[size];
-                       // mMap.clear();   //Assuming you're using mMap
-
-                        for (DataSnapshot child : snapshot.getChildren()) {
-                            double lat = (Double) child.child("latitude").getValue();
-                            double lng = (Double) child.child("longitude").getValue();
-
-                            //convert the coordinates to LatLng
-                            LatLng latLng = new LatLng(lat,lng);
-                            //Now lets add updated markers
-
-                            //lets add updated marker
-                             mMap.addMarker(new MarkerOptions()
-                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).position(latLng).title("Your Fav Loc"));
-                        }
-                        /**
-                        for(DataSnapshot dataSnapshot: snapshot.getChildren()){
-                            //Specify your model class here
-                            Model cordinatesModel = new Model();
-                            //lets create a loop
-                            for(int i=0;i<=size;i++) {
-                                try {
-                                    //assuming you've set your getters and setters in the Model class
-                                    cordinatesModel.setLatitude(dataSnapshot.getValue(Model.class).getLatitude());
-                                    cordinatesModel.setLongitude(dataSnapshot.getValue(Model.class).getLongitude());
-
-                                    //lets retrieve the coordinates and other information
-                                    Double latitude1 = cordinatesModel.getLatitude();
-                                    Double longitude1 = cordinatesModel.getLongitude();
-
-                                    //convert the coordinates to LatLng
-                                    LatLng latLng = new LatLng(latitude1, longitude1);
-                                    //Now lets add updated markers
-
-                                    //lets add updated marker
-                                    allMarkers[i] = mMap.addMarker(new MarkerOptions()
-                                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).position(latLng).title("Your Fav Loc"));
-                                }catch (Exception ex){
-                                    ex.printStackTrace();
-                                }
-                            }**/
-
-
-                  /**  }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });**/
+                Intent intent = new Intent(RoutesActivity.this, FavActivity.class);
+                intent.putExtra("key1", fav_lat);
+                intent.putExtra("key2", fav_lng);
+                startActivity(intent);
             }
         });
-
-
 
                 // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -353,33 +305,12 @@ public class RoutesActivity extends FragmentActivity implements OnMapReadyCallba
 
         mMap.setOnMarkerClickListener(this);
         mMap.setOnMarkerDragListener(this);
+
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
 
             buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
         }
-
-        //retreiving favourite landmarks
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Location").child("location");
-        ValueEventListener listener = databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Double lat = snapshot.child("latitude").getValue(Double.class);
-                Double lng = snapshot.child("longitude").getValue(Double.class);
-
-                LatLng Favlocation = new LatLng(lat,lng);
-                mMap.addMarker(new MarkerOptions().position(Favlocation).title("Fav"));
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Favlocation, 14F));
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-
-
     }
 
 
@@ -456,7 +387,6 @@ public class RoutesActivity extends FragmentActivity implements OnMapReadyCallba
         mMap.animateCamera(CameraUpdateFactory.zoomBy(15));
 
 
-
         if(mGoogleApiClient != null){
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
 
@@ -529,16 +459,55 @@ public class RoutesActivity extends FragmentActivity implements OnMapReadyCallba
 
 
     private void saveToFirebase() {
-        Map mLocations = new HashMap();
-        Map  mCoordinate = new HashMap();
-        mCoordinate.put("latitude", end_latitude);
-        mCoordinate.put("longitude", end_longitude);
-        mLocations.put("mylocation", mCoordinate);
-        FirebaseDatabase.getInstance().getReference("User").child(mAuth.getUid()).child("Location").push().setValue(mLocations);
+        HashMap<String, Object> location = new HashMap<String, Object>();
+        fav_lat.add(end_latitude);
+        fav_lng.add(end_longitude);
+        location.put("lat", fav_lat);
+        location.put("lng", fav_lng);
+
+        FirebaseDatabase.getInstance().getReference("User").child(mAuth.getUid()).child("Location").setValue(location);
         Toast.makeText(this, "Favourite Added!", Toast.LENGTH_LONG).show();
-        //databaseReference.push().setValue(mLocations);
+
     }
 
+    public void getFavLng()
+    {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("User");
+        ref.child(mAuth.getUid()).child("Location").child("lng")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        ArrayList<Double> friends = new ArrayList<>();
+                        for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                            String friend = ds.getValue(Double.class).toString();
+                            friends.add(Double.parseDouble(friend));
+                        }
+                        fav_lng = friends;
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {}
+                });
+    }
+    public void getFavLat()
+    {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("User");
+        ref.child(mAuth.getUid()).child("Location").child("lat")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        ArrayList<Double> friends = new ArrayList<>();
+                        for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                            String friend = ds.getValue(Double.class).toString();
+                            friends.add(Double.parseDouble(friend));
+                        }
+                        fav_lat = friends;
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {}
+                });
+    }
 
 }
 
