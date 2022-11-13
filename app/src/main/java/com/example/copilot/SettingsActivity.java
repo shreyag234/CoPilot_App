@@ -41,7 +41,7 @@ public class SettingsActivity extends AppCompatActivity {
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
-        reference = firebaseDatabase.getInstance().getReference().child("Settings");
+        reference = firebaseDatabase.getInstance().getReference("User").child(mAuth.getUid()).child("Settings");
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -68,7 +68,8 @@ public class SettingsActivity extends AppCompatActivity {
 
                 km.isChecked();
                 settingsClass.setSetting(s1);
-                reference.child(String.valueOf(i+1)).setValue(settingsClass);
+                //reference.child(String.valueOf(i+1)).setValue(settingsClass);
+                reference.setValue(settingsClass);
             }
         });
         miles.setOnClickListener(new View.OnClickListener() {
@@ -77,7 +78,8 @@ public class SettingsActivity extends AppCompatActivity {
                 miles.isChecked();
                 String s2 = miles.getText().toString();
                 settingsClass.setSetting(s2);
-                reference.child(String.valueOf(i+1)).setValue(settingsClass);
+               //reference.child(String.valueOf(i+1)).setValue(settingsClass);
+                reference.setValue(settingsClass);
             }
         });
         navigationView.setOnItemSelectedListener(item -> {

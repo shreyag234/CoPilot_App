@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,9 +25,6 @@ public class GetDistanceData extends AsyncTask<Object, String, String> {
     String googleDirectionsData;
     String duration, distance;
     LatLng latLng;
-
-    RadioButton km, miles;
-
 
     @Override
     protected String doInBackground(Object... objects) {
@@ -58,13 +56,11 @@ public class GetDistanceData extends AsyncTask<Object, String, String> {
         markerOptions.draggable(true);
         markerOptions.title("Duration = "+duration);
         markerOptions.snippet("Distance = "+distance);
-
-
         mMap.addMarker(markerOptions);
 
     }
 }
-//code attribute
+//code attribution
 //similar to YouTube Video
 // YouTube Channel: https://www.youtube.com/c/MdJamalmca
 //https://www.youtube.com/watch?v=kRAyXxgwOhQ&t=830s

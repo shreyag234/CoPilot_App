@@ -89,6 +89,7 @@ public class RoutesActivity extends FragmentActivity implements OnMapReadyCallba
     ArrayList<Double> fav_lat = new ArrayList<Double>();
     ArrayList<Double> fav_lng = new ArrayList<Double>();
 
+    private String Dtype;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -219,14 +220,17 @@ public class RoutesActivity extends FragmentActivity implements OnMapReadyCallba
                 // Double distance = SphericalUtil.computeDistanceBetween(currentLatLng, endLatLng);
                 String kilometers = String.format("%.2f", results[0] / 1000);
                 String miles = String.format("%.2f", (results[0] / 1000) * 0.62137);
-                markerOptions.snippet("Distance = " + kilometers);
+
+                //checking which type they chose and displaying the distance
+                if(Dtype == "Metric"){
+                    markerOptions.snippet("Distance = " + miles);
+                    Toast.makeText(RoutesActivity.this, "Distance = "+ miles +" Miles", Toast.LENGTH_LONG).show();
+                }else {
+                    markerOptions.snippet("Distance = " + kilometers);
+                    Toast.makeText(RoutesActivity.this, "Distance = "+ kilometers +"Kms", Toast.LENGTH_LONG).show();
+                }
+
                 mMap.addMarker(markerOptions);
-
-                //adding the distance to the textview
-                // display.setText(kilometers +" Kms" +
-                // "\n"+miles +" in Miles");
-
-
 
 
             }
@@ -302,6 +306,20 @@ public class RoutesActivity extends FragmentActivity implements OnMapReadyCallba
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        //trying to get the user choice between Km/Miles
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("User").child(mAuth.getUid()).child("Settings").child("setting");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Dtype = snapshot.getValue().toString();
+                //Toast.makeText(RoutesActivity.this, Dtype + " is", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         mMap.setOnMarkerClickListener(this);
         mMap.setOnMarkerDragListener(this);
@@ -477,12 +495,12 @@ public class RoutesActivity extends FragmentActivity implements OnMapReadyCallba
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        ArrayList<Double> friends = new ArrayList<>();
+                        ArrayList<Double> allData = new ArrayList<>();
                         for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                            String friend = ds.getValue(Double.class).toString();
-                            friends.add(Double.parseDouble(friend));
+                            String data = ds.getValue(Double.class).toString();
+                            allData.add(Double.parseDouble(data));
                         }
-                        fav_lng = friends;
+                        fav_lng = allData;
                     }
 
                     @Override
@@ -496,12 +514,12 @@ public class RoutesActivity extends FragmentActivity implements OnMapReadyCallba
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        ArrayList<Double> friends = new ArrayList<>();
+                        ArrayList<Double> allData2 = new ArrayList<>();
                         for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                            String friend = ds.getValue(Double.class).toString();
-                            friends.add(Double.parseDouble(friend));
+                            String data2 = ds.getValue(Double.class).toString();
+                            allData2.add(Double.parseDouble(data2));
                         }
-                        fav_lat = friends;
+                        fav_lat = allData2;
                     }
 
                     @Override

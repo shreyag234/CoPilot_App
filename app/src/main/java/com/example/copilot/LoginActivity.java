@@ -17,6 +17,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.security.MessageDigest;
+
 public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
@@ -56,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
     private void loginUser() {
         String UEmail = email.getText().toString().trim();
         String UPassword = password.getText().toString().trim();
+        String UHassPass = sha256(UPassword);
 
         //validation
         if(UEmail.isEmpty()){
@@ -109,6 +112,23 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    public static String sha256(String base) {
+        try{
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(base.getBytes("UTF-8"));
+            StringBuffer hexString = new StringBuffer();
+
+            for (int i = 0; i < hash.length; i++) {
+                String hex = Integer.toHexString(0xff & hash[i]);
+                if(hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+
+            return hexString.toString();
+        } catch(Exception ex){
+            throw new RuntimeException(ex);
+        }
+    }
 }
 //code attribution
 //This code is similar to a youtube video

@@ -18,6 +18,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.security.MessageDigest;
+
 public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
@@ -57,7 +59,8 @@ public class RegisterActivity extends AppCompatActivity {
         //converting the text box inputs to a string
         String Name = name.getText().toString().trim();
         String Email = email.getText().toString().trim();
-        String Password = password.getText().toString().trim();
+        String Password = password.getText().toString();
+        String HassPassword = sha256(Password);
 
         //validations
         //error messages
@@ -108,7 +111,7 @@ public class RegisterActivity extends AppCompatActivity {
                         if(task.isSuccessful()){
                             //creating an object of User
 
-                            User userObj = new User(Name, Email, Password);
+                            User userObj = new User(Name, Email, HassPassword);
 
                             //after this add realtime database to this app
                             FirebaseDatabase.getInstance().getReference("User")
@@ -132,6 +135,24 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 });
 
+    }
+
+    public static String sha256(String base) {
+        try{
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(base.getBytes("UTF-8"));
+            StringBuffer hexString = new StringBuffer();
+
+            for (int i = 0; i < hash.length; i++) {
+                String hex = Integer.toHexString(0xff & hash[i]);
+                if(hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+
+            return hexString.toString();
+        } catch(Exception ex){
+            throw new RuntimeException(ex);
+        }
     }
 }
 //code attribution
