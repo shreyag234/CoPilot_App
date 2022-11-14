@@ -49,7 +49,7 @@ dependencies {
     implementation 'com.google.maps.android:android-maps-utils:0.4+'
     implementation 'com.github.jd-alexander:library:1.1.0'
 
-    //allows users to login with facebook
-    implementation 'com.facebook.android:facebook-login:latest.release'
+    //allows users to login with google
+    implementation 'com.google.android.gms:play-services-auth:20.3.0'
 
 }

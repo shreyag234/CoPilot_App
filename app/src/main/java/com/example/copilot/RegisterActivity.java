@@ -1,6 +1,7 @@
 package com.example.copilot;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -9,9 +10,15 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -27,6 +34,11 @@ public class RegisterActivity extends AppCompatActivity {
     Button registerBtn;
     TextView signIn;
 
+    ImageButton googleSignIn;
+    ImageButton facebookSignIn;
+
+    GoogleSignInOptions gso;
+    GoogleSignInClient gsc;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +51,22 @@ public class RegisterActivity extends AppCompatActivity {
         password = findViewById(R.id.password_txt);
         registerBtn = findViewById(R.id.Register_btn);
         signIn = findViewById(R.id.signIn_btn);
+
+        googleSignIn = findViewById(R.id.google_signIn);
+        facebookSignIn = findViewById(R.id.facebook_signIn);
+
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                        .build();
+
+        gsc = GoogleSignIn.getClient(this, gso);
+
+        googleSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SignIn();
+            }
+        });
 
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,6 +81,26 @@ public class RegisterActivity extends AppCompatActivity {
                 startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
             }
         });
+    }
+
+    private void SignIn(){
+        Intent intent = gsc.getSignInIntent();
+        startActivityForResult(intent, 100);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 100){
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try{
+                task.getResult(ApiException.class);
+                startActivity(new Intent(RegisterActivity.this, MapsActivity.class));
+            }catch (ApiException e){
+                e.printStackTrace();
+            }
+        }
     }
 
     private void registerUser() {
