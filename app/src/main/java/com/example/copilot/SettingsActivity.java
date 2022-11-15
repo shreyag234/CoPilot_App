@@ -11,6 +11,11 @@ import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.Switch;
 
+import java.util.Locale;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.util.DisplayMetrics;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -25,6 +30,7 @@ public class SettingsActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     BottomNavigationView navigationView;
     RadioButton km, miles;
+    RadioButton rbSpanish, rbAfrikaans;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference reference;
     int i = 0;
@@ -61,6 +67,9 @@ public class SettingsActivity extends AppCompatActivity {
         km = findViewById(R.id.rbKm);
         miles = findViewById(R.id.rbMiles);
 
+        rbAfrikaans = findViewById(R.id.Afrikaans);
+        rbSpanish = findViewById(R.id.Spanish);
+
         km.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,6 +89,19 @@ public class SettingsActivity extends AppCompatActivity {
                 settingsClass.setSetting(s2);
                //reference.child(String.valueOf(i+1)).setValue(settingsClass);
                 reference.setValue(settingsClass);
+            }
+        });
+
+        rbAfrikaans.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setLocale("af");
+            }
+        });
+        rbSpanish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setLocale("es");
             }
         });
         navigationView.setOnItemSelectedListener(item -> {
@@ -129,5 +151,26 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
+    private void setLocale(String language) {
+        Resources resources = getResources();
+
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+
+        Configuration configuration = resources.getConfiguration();
+
+        configuration.locale = new Locale(language);
+
+        resources.updateConfiguration(configuration, metrics);
+
+        onConfigurationChanged(configuration);
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        rbSpanish.setText("Spanish");
+        rbAfrikaans.setText("Afrikaans");
+    }
 }
 

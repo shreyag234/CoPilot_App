@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CoPilot</string>
+    <string name="app_name" translatable="true">CoPilot</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="googleMapsKey">AIzaSyAnPU2crxXHZGIgMKQpYzxSbpmtvapghiY</string>
     <string name="title_activity_routes">RoutesActivity</string>
