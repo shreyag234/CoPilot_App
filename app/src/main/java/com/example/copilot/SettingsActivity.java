@@ -129,6 +129,7 @@ public class SettingsActivity extends AppCompatActivity {
                             break;
                         case R.id.fav_nav:
                             //redirect to favs page
+                            startActivity(new Intent(SettingsActivity.this, FavActivity.class));
                             break;
                         case R.id.home_nav:
                             item.setChecked(true);

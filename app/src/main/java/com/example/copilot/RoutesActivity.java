@@ -47,6 +47,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.inappmessaging.FirebaseInAppMessaging;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -72,7 +73,7 @@ public class RoutesActivity extends FragmentActivity implements OnMapReadyCallba
     ImageButton zoomIn, zoomOut, searchBtn;
     BottomNavigationView navigationView;
     EditText place;
-    Button go_btn, show_btn, route_btn, save_btn;
+    Button go_btn, show_btn, route_btn, save_btn, end_btn;
 
 
     public static final int Request_Code = 99;
@@ -88,8 +89,10 @@ public class RoutesActivity extends FragmentActivity implements OnMapReadyCallba
     //arrays that store all the latitudes and longitudes of the fav location
     ArrayList<Double> fav_lat = new ArrayList<Double>();
     ArrayList<Double> fav_lng = new ArrayList<Double>();
-
     private String Dtype;
+    //a variable that stores the number of times they saved a fav location
+    public int count = 0;
+    public int point = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,6 +122,7 @@ public class RoutesActivity extends FragmentActivity implements OnMapReadyCallba
         show_btn = findViewById(R.id.go_btn); //makes the marker appear
         route_btn = findViewById(R.id.route_btn); //embedded route on map
         save_btn = findViewById(R.id.save_btn);
+        end_btn = findViewById(R.id.end_btn);
 
         getFavLat();
         getFavLng();
@@ -180,6 +184,7 @@ public class RoutesActivity extends FragmentActivity implements OnMapReadyCallba
                             break;
                         case R.id.fav_nav:
                             //redirect to favs page
+                            startActivity(new Intent(RoutesActivity.this, FavActivity.class));
                             break;
                         case R.id.home_nav:
                             item.setChecked(true);
@@ -282,9 +287,22 @@ public class RoutesActivity extends FragmentActivity implements OnMapReadyCallba
                 intent.putExtra("key1", fav_lat);
                 intent.putExtra("key2", fav_lng);
                 startActivity(intent);
+
+                //increasing the count
+                count++;
             }
         });
 
+        end_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mMap.clear();
+            }
+        });
+        //checks if they added more than 3 fav locations
+        if(count >= 3){
+            point = 100;
+        }
                 // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);

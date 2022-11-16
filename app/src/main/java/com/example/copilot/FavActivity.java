@@ -53,7 +53,7 @@ public class FavActivity extends FragmentActivity implements OnMapReadyCallback 
         //adding fav location markers
         for(int i=0; i < passedLat.size(); i++){
             mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(passedLat.get(i), passedLng.get(i)) ).title("FAVV")
+                    .position(new LatLng(passedLat.get(i), passedLng.get(i)) ).title("My Favorite")
             );
         }
 

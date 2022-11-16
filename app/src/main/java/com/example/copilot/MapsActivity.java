@@ -198,6 +198,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     break;
                 case R.id.fav_nav:
                     //redirect to favs page
+                    startActivity(new Intent(MapsActivity.this, FavActivity.class));
                     break;
                 case R.id.home_nav:
                     item.setChecked(true);
