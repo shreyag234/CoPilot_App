@@ -10,6 +10,7 @@
     <color name="lightGray">#E5E4E2</color>
     <color name="lightBlue">#adcae6</color>
     <color name="Blue">#0b0ba3</color>
+    <color name="Transparent">#FFFFFF</color>
 
     <color name="colorPrimary">#11CFC5</color>
     <color name="colorPrimaryDark">#000</color>

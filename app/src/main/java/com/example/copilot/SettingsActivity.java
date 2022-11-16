@@ -95,13 +95,13 @@ public class SettingsActivity extends AppCompatActivity {
         rbAfrikaans.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setLocale("af");
+               // setLocale("af");
             }
         });
         rbSpanish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setLocale("es");
+                //setLocale("es");
             }
         });
         navigationView.setOnItemSelectedListener(item -> {
@@ -151,7 +151,13 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
-    private void setLocale(String language) {
+    /**
+     * @param language
+     * The below method tries to change the app language to either Afrikaans or Spanish
+     * However, we could not make it to work
+     */
+
+   /** private void setLocale(String language) {
         Resources resources = getResources();
 
         DisplayMetrics metrics = resources.getDisplayMetrics();
@@ -171,6 +177,6 @@ public class SettingsActivity extends AppCompatActivity {
 
         rbSpanish.setText("Spanish");
         rbAfrikaans.setText("Afrikaans");
-    }
+    }**/
 }
 

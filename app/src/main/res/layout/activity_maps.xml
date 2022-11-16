@@ -16,6 +16,15 @@
         android:layout_height="500dp" >
 
         <ImageButton
+            android:id="@+id/shareBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:background="@color/lightBlue"
+            android:foregroundGravity="center"
+            android:src="@drawable/share_icon" />
+        <ImageButton
             android:id="@+id/zoomInBtn"
             android:layout_width="30dp"
             android:layout_height="30dp"
@@ -42,12 +51,16 @@
         android:layout_below="@id/map"
         android:orientation="horizontal">
 
-
+        <Button
+            android:id="@+id/SaveLoc"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:background="#0000ffff"/>
         <EditText
             android:id="@+id/searchPlace"
             android:layout_width="50dp"
             android:layout_height="40dp"
-            android:layout_marginLeft="50dp"
+            android:layout_marginLeft="40dp"
             android:layout_marginTop="15dp"
             android:layout_weight="1"
             android:width="30dp"

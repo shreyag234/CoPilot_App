@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -53,6 +54,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -81,8 +84,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     ImageButton atm, attractions, hotel, hospital, parks, restaurant;
     ImageButton searchBtn;
     ImageButton zoomIn, zoomOut;
+    ImageButton shareBtn;
     EditText searchText;
-
+    Button saveLocation;
     FirebaseDatabase firebaseDatabase;
     private DatabaseReference reference, userLocationRef;
 
@@ -98,9 +102,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mAuth = FirebaseAuth.getInstance();
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        //getCurrentLocation();
 
-        //firebaseDatabase = FirebaseDatabase.getInstance("https://copilotapp-672ae-default-rtdb.firebaseio.com/");
         reference = FirebaseDatabase.getInstance().getReference("Places");
         userLocationRef = FirebaseDatabase.getInstance().getReference("User").child(mAuth.getUid()).child("Saved Locations");
 
@@ -133,8 +135,47 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         zoomIn = findViewById(R.id.zoomInBtn);
         zoomOut = findViewById(R.id.zoomOutBtn);
+        shareBtn = findViewById(R.id.shareBtn);
+        saveLocation = findViewById(R.id.SaveLoc);
         navigationView = findViewById(R.id.bottom_nav);
 
+        saveLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Save_Retrieve(); //calling the method that saves the suer location to Firebase
+            }
+        });
+        //the below allows the user to share their location coordinates to other apps
+        shareBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("User").child(mAuth.getUid()).child("Current Location");
+                ValueEventListener listener = ref.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Double send_lat = snapshot.child("lat").getValue(Double.class);
+                        Double send_lng = snapshot.child("lng").getValue(Double.class);
+                        Toast.makeText(MapsActivity.this, "lat:"+send_lat.toString()+"lng:"+send_lng.toString(), Toast.LENGTH_LONG).show();
+
+                        Intent shareIntent = new Intent();
+                        shareIntent.setAction(Intent.ACTION_SEND);
+                        shareIntent.putExtra(Intent.EXTRA_TEXT, "My Location >> latitude:"+send_lat.toString()+"longitude:"+send_lng.toString());
+                        shareIntent.setType("text/plain");
+
+                        Intent sendIntent = Intent.createChooser(shareIntent, null);
+                        startActivity(sendIntent);
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
+            }
+        });
 
         zoomIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -217,20 +258,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 getNearByPlaces.execute(dataTransfer);
                 Toast.makeText(MapsActivity.this, "Showing nearby ATMs", Toast.LENGTH_LONG).show();
-
-              /**StringBuilder stringBuilder = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
-              stringBuilder.append("location="+mLastLocation.getLatitude()+","+mLastLocation.getLongitude());
-              stringBuilder.append("&radius=1000");
-              stringBuilder.append("&type=atm");
-              stringBuilder.append("&sensor=false");
-              stringBuilder.append("&key="+"AIzaSyBwZVqC8QGNdxtJQHqGv9OYz9QqenZ800Q");
-              String url = stringBuilder.toString();
-              Object fetchData[] = new Object[2];
-              fetchData[0] = mGoogleMap;
-              fetchData[1] = url;
-
-              GetNearByPlaces getNearByPlaces = new GetNearByPlaces();
-              getNearByPlaces.execute(fetchData);**/
 
             }
         });
@@ -331,10 +358,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mGoogleMap = googleMap;
 
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-////////////
             buildGoogleApiClient();
             mGoogleMap.setMyLocationEnabled(true);
             //mGoogleApiClient.connect();
+
         }
 
     }
@@ -466,10 +493,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public boolean onMarkerClick(@NonNull Marker marker) {
-
         return false;
     }
 
+    private void Save_Retrieve(){
+
+        HashMap Clocation = new HashMap();
+        Clocation.put("lat", mGoogleMap.getMyLocation().getLatitude());
+        Clocation.put("lng", mGoogleMap.getMyLocation().getLongitude());
+        FirebaseDatabase.getInstance().getReference("User").child(mAuth.getUid()).child("Current Location").setValue(Clocation);
+        Toast.makeText(this, "Saved Location!", Toast.LENGTH_LONG).show();
+    }
 
 }
 
