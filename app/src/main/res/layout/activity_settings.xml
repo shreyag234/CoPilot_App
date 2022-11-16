@@ -46,7 +46,6 @@
                     style="@style/viewParent.headerText"
                     android:layout_marginTop="20dp"
                     android:layout_toRightOf="@id/profileCircleImageView"
-                    android:text="User"
                     android:textSize="18sp" />
 
                 <TextView

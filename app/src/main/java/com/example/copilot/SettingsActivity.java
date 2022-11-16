@@ -15,6 +15,7 @@ import java.util.Locale;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,10 +30,11 @@ public class SettingsActivity extends AppCompatActivity {
     private Switch darkModeSwitch;
     private FirebaseAuth mAuth;
     BottomNavigationView navigationView;
+    TextView username;
     RadioButton km, miles;
     RadioButton rbSpanish, rbAfrikaans;
     FirebaseDatabase firebaseDatabase;
-    DatabaseReference reference;
+    DatabaseReference reference, reference2;
     int i = 0;
     SettingsClass settingsClass = new SettingsClass();
 
@@ -47,7 +49,22 @@ public class SettingsActivity extends AppCompatActivity {
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
+        username = findViewById(R.id.usernameTextView);
+
         reference = firebaseDatabase.getInstance().getReference("User").child(mAuth.getUid()).child("Settings");
+        reference2 = firebaseDatabase.getInstance().getReference("User").child(mAuth.getUid()).child("name");
+        reference2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String UserName = snapshot.getValue(String.class);
+                username.setText(UserName);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
