@@ -2,6 +2,7 @@ package com.example.copilot;
 
 import androidx.fragment.app.FragmentActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -11,6 +12,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.copilot.databinding.ActivityFavBinding;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -18,6 +21,9 @@ public class FavActivity extends FragmentActivity implements OnMapReadyCallback 
 
     private GoogleMap mMap;
     private ActivityFavBinding binding;
+    private FirebaseAuth mAuth;
+
+    BottomNavigationView navigationView;
 
     ArrayList<Double> passedLat = new ArrayList<Double>();
     ArrayList<Double> passedLng = new ArrayList<Double>();
@@ -25,6 +31,41 @@ public class FavActivity extends FragmentActivity implements OnMapReadyCallback 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
+
+        navigationView = findViewById(R.id.bottom_nav);
+
+        navigationView.setOnItemSelectedListener(item -> {
+                    switch (item.getItemId()){
+                        case R.id.maps_nav:
+                            //redirect to routes page
+                            startActivity(new Intent(FavActivity.this, RoutesActivity.class));
+                            break;
+                        case R.id.fav_nav:
+                            //redirect to favs page
+                            startActivity(new Intent(FavActivity.this, FavActivity.class));
+                            break;
+                        case R.id.home_nav:
+                            item.setChecked(true);
+                            //redirect to dashboard
+                            Intent i = new Intent(this, MapsActivity.class);
+                            startActivity(i);
+                            break;
+                        case R.id.settings_nav:
+                            //redirect to settings page
+                            startActivity(new Intent(FavActivity.this, SettingsActivity.class));
+                            break;
+                        case R.id.logoff_nav:
+                            //exit the app or redirect to register
+                            mAuth.signOut();
+                            startActivity(new Intent(FavActivity.this, RegisterActivity.class));
+                            break;
+                    }
+                    return true;
+                }
+
+        );
         passedLat = (ArrayList<Double>) getIntent().getSerializableExtra("key1");
         passedLng = (ArrayList<Double>) getIntent().getSerializableExtra("key2");
 

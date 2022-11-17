@@ -139,16 +139,15 @@
     </LinearLayout>
 
 
-
-<com.google.android.material.bottomnavigation.BottomNavigationView
-android:id="@+id/bottom_nav"
-android:layout_width="match_parent"
-android:layout_height="70dp"
-android:layout_below="@id/linearLayout"
-    android:layout_marginTop="0dp"
-app:itemIconTint="@color/Blue"
-app:itemTextColor="@color/Blue"
-app:menu="@menu/bottom_nav" />
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_below="@id/linearLayout"
+        android:layout_marginTop="0dp"
+        app:itemIconTint="@color/Blue"
+        app:itemTextColor="@color/Blue"
+        app:menu="@menu/bottom_nav" />
 
 
     </RelativeLayout>

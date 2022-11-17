@@ -56,7 +56,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-
+        callbackManager = CallbackManager.Factory.create();
         name = findViewById(R.id.name_txt);
         email = findViewById(R.id.email_txt);
         password = findViewById(R.id.password_txt);
@@ -70,7 +70,7 @@ public class RegisterActivity extends AppCompatActivity {
         facebookSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                callbackManager = CallbackManager.Factory.create();
+
                 LoginManager.getInstance().logInWithReadPermissions(RegisterActivity.this, Arrays.asList("public_profile"));
                 LoginManager.getInstance().registerCallback(callbackManager,
                         new FacebookCallback<LoginResult>() {
@@ -89,6 +89,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                             }
                         });
+
             }
         });
 
@@ -140,9 +141,10 @@ public class RegisterActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-
         // Pass the activity result back to the Facebook SDK
         callbackManager.onActivityResult(requestCode, resultCode, data);
+
+
     }
 
     private void registerUser() {
